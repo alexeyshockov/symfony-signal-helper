@@ -28,8 +28,6 @@ $application->run($input);
 And use it inside your command:
 
 ```php
-<?php
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('signal');
@@ -37,7 +35,7 @@ And use it inside your command:
         
         while (true) {
             if (count(array_intersect([SIGINT, SIGTERM], $helper->takeSignals())) > 0) {
-                // Stop by any of SIGINT or SIGTERM signals.
+                // Stop by any of SIGINT or SIGTERM.
                 break;
             }
             
