@@ -1,0 +1,27 @@
+{
+    "name":        "alexeyshockov/symfony-signal-helper",
+    "type":        "library",
+    "description": "Symfony Console halper to handle process signals (like termination)",
+    "keywords":    ["symfony", "console"],
+    "homepage":    "http://github.com/alexeyshockov/symfony-signal-helper",
+    "license":     "MIT",
+    "support":     {
+        "issues": "https://github.com/alexeyshockov/symfony-signal-helper/issues"
+    },
+    "authors": [
+        {
+            "name":     "Alexey Shockov",
+            "email":    "alexey@shockov.com",
+            "homepage": "http://alexey.shockov.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "symfony/console": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlexS\\": "src/AlexS"
+        }
+    }
+}
