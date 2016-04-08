@@ -17,12 +17,11 @@ Just register the helper in your application (`app/console`, for example):
 
 // ...
 
-$kernel      = new AppKernel($env, $debug);
-$application = new Application($kernel);
+$console = new Application();
 
 $console->getHelperSet()->set(new SignalHelper());
 
-$application->run($input);
+$console->run($input);
 ```
 
 And use it inside your command:
