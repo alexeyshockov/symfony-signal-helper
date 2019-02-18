@@ -2,6 +2,7 @@
 
 namespace AlexS;
 
+use RuntimeException;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 
@@ -20,12 +21,12 @@ class SignalHelper implements HelperInterface
     public function __construct()
     {
         if (!extension_loaded('pcntl')) {
-            throw new \RuntimeException('PCNTL extension is not loaded.');
+            throw new RuntimeException('PCNTL extension is not loaded.');
         }
     }
 
     /**
-     * Bind helper's handlers.
+     * Bind helper's handlers
      */
     public function listen()
     {
@@ -42,7 +43,7 @@ class SignalHelper implements HelperInterface
     }
 
     /**
-     * Restore default handlers for signals.
+     * Restore default handlers for signals
      */
     public function restoreDefaultHandlers()
     {
@@ -70,9 +71,6 @@ class SignalHelper implements HelperInterface
         return $signals;
     }
 
-    /**
-     * @param HelperSet|null $helperSet
-     */
     public function setHelperSet(HelperSet $helperSet = null)
     {
         $this->helperSet = $helperSet;
