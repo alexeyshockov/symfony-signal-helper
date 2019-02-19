@@ -22,6 +22,9 @@
     "autoload": {
         "psr-4": {
             "AlexS\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     }
 }
