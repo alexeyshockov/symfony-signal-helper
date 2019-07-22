@@ -33,7 +33,7 @@ And use it inside your command:
         $helper->listen();
         
         while (true) {
-            if (count(array_intersect([SIGINT, SIGTERM], $helper->takeSignals())) > 0) {
+            if ($handler->signalReceived()) {
                 // Stop by any of SIGINT or SIGTERM.
                 break;
             }
@@ -41,4 +41,32 @@ And use it inside your command:
             // Some business logic.
         }
     }
+```
+
+
+If you need to pass this to a service you can use the interface:
+
+```php
+class SomeServiceClass
+{
+    /** @var TerminationSignalInterface */
+    private $terminationSignal;
+
+    public function __construct(
+        TerminationSignalInterface $terminationSignal,
+    ) {
+        $this->terminationSignal = $terminationSignal;
+    }
+
+
+    public function businessLogic()
+    {
+        do {
+            if ($this->terminationSignal->signalReceived()) {
+                return null;
+            }
+             ..
+        } while (..);
+    }
+}
 ```

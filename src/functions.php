@@ -15,7 +15,7 @@ function with_signal_brake($flow)
     $handler->listen();
 
     foreach ($flow as $key => $value) {
-        if (count(array_intersect([SIGINT, SIGTERM], $handler->takeSignals())) > 0) {
+        if ($handler->signalReceived()) {
             // Stop by any of SIGINT or SIGTERM.
             break;
         }

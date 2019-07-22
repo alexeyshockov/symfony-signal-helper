@@ -6,7 +6,7 @@ use RuntimeException;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 
-class SignalHelper implements HelperInterface
+class SignalHelper implements HelperInterface, TerminationSignalInterface
 {
     /**
      * @var array
@@ -42,6 +42,14 @@ class SignalHelper implements HelperInterface
         pcntl_signal(SIGHUP, $handler);
     }
 
+    public function signalReceived()
+    {
+        if (count(array_intersect([SIGINT, SIGTERM], $this->takeSignals())) > 0) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Restore default handlers for signals
      */
@@ -50,25 +58,6 @@ class SignalHelper implements HelperInterface
         pcntl_signal(SIGTERM, SIG_DFL);
         pcntl_signal(SIGINT, SIG_DFL);
         pcntl_signal(SIGHUP, SIG_DFL);
-    }
-
-    /**
-     * Use cases:
-     *  in_array(SIGHUP, $helper->takeSignals())
-     * or
-     *  array_intersect([SIGINT, SIGTERM], $helper->takeSignals())
-     *
-     * @return array List with signals (integer codes), can contains duplicates. Newest signal will be first.
-     */
-    public function takeSignals()
-    {
-        // All signals will caught only inside this call.
-        pcntl_signal_dispatch();
-
-        $signals = $this->signals;
-        $this->signals = [];
-
-        return $signals;
     }
 
     public function setHelperSet(HelperSet $helperSet = null)
@@ -90,5 +79,23 @@ class SignalHelper implements HelperInterface
     public function getName()
     {
         return 'signal';
+    }
+
+    /**
+     * Use cases:
+     *  in_array(SIGHUP, $helper->takeSignals())
+     * or
+     *  array_intersect([SIGINT, SIGTERM], $helper->takeSignals())
+     *
+     * @return array List with signals (integer codes), can contains duplicates. Newest signal will be first.
+     */
+    private function takeSignals()
+    {
+        // All signals will caught only inside this call.
+        pcntl_signal_dispatch();
+
+        $signals = $this->signals;
+
+        return $signals;
     }
 }
